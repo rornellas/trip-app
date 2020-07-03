@@ -1,0 +1,111 @@
+AWSTemplateFormatVersion: '2020-06-20'
+Transform: AWS::Serverless-2016-10-31
+Description: 'trip-app Rest API to manage a trips'
+Globals:
+  Function:
+    Timeout: 60
+    MemorySize: 512
+    Environment:
+      Variables:
+        TABLE_NAME:
+          Ref: TripTable
+        ENDPOINT_OVERRIDE: ''
+Resources:
+  CreateTripRecordFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://rornellasservless/dd1e3068199203cf34d7dc7ce9cacac2
+      Handler: br.com.rornellas.fiap.handler.CreateTripRecord::handleRequest
+      Runtime: java8
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: TripTable
+      Events:
+        CreateTripRecord:
+          Type: Api
+          Properties:
+            Path: /trips
+            Method: post
+  GetTripRecordsByPeriodFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://rornellasservless/dd1e3068199203cf34d7dc7ce9cacac2
+      Handler: br.com.rornellas.fiap.handler.GetTripRecordsByPeriod::handleRequest
+      Runtime: java8
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: TripTable
+      Events:
+        GetTripRecordsByPeriod:
+          Type: Api
+          Properties:
+            Path: /trips
+            Method: get
+            RequestParameters:
+            - method.request.querystring.starts
+            - method.request.querystring.ends
+  GetTripRecordsByCountryFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://rornellasservless/dd1e3068199203cf34d7dc7ce9cacac2
+      Handler: br.com.rornellas.fiap.handler.GetTripRecordsByCountry::handleRequest
+      Runtime: java8
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: TripTable
+      Events:
+        GetTripRecordsByTag:
+          Type: Api
+          Properties:
+            Path: /trips/{country}
+            Method: get
+            RequestParameters:
+            - method.request.querystring.city
+  TripTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: trip
+      AttributeDefinitions:
+      - AttributeName: country
+        AttributeType: S
+      - AttributeName: city
+        AttributeType: S
+      - AttributeName: date
+        AttributeType: S
+      KeySchema:
+      - AttributeName: country
+        KeyType: HASH
+      - AttributeName: city
+        KeyType: RANGE
+      LocalSecondaryIndexes:
+      - IndexName: dateIndex
+        KeySchema:
+        - AttributeName: country
+          KeyType: HASH
+        - AttributeName: date
+          KeyType: RANGE
+        Projection:
+          ProjectionType: ALL
+      BillingMode: PAY_PER_REQUEST
+Outputs:
+  CreateTripRecordFunction:
+    Description: CreateTripRecord Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - CreateTripRecordFunction
+      - Arn
+  GetTripRecordsByPeriodFunction:
+    Description: GetTripRecordsByPeriod Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - GetTripRecordsByPeriodFunction
+      - Arn
+  GetTripRecordsByCountryFunction:
+    Description: GetTripRecordsByCountry Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - GetTripRecordsByCountryFunction
+      - Arn

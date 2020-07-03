@@ -1,0 +1,124 @@
+{
+	"info": {
+		"_postman_id": "ef9ef35f-a302-4fa0-b0f0-b15a387362ba",
+		"name": "Study DataLake",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "findByPeriod",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/study/devops/findByPeriod?starts=2015-02-01&ends=2015-08-09",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"study",
+						"devops",
+						"findByPeriod"
+					],
+					"query": [
+						{
+							"key": "starts",
+							"value": "2015-02-01"
+						},
+						{
+							"key": "ends",
+							"value": "2015-08-09"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createStudyRecord",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"topic\": null,\n    \"dateTimeCreation\": null,\n    \"tag\": null,\n    \"url\": null,\n    \"description\": null,\n    \"consumed\": null\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/study",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"study"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findByTag",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/study/devops/findByTag?tag=codePipeline",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"study",
+						"devops",
+						"findByTag"
+					],
+					"query": [
+						{
+							"key": "tag",
+							"value": "codePipeline"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findByIsConsumed",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/study/devops/findByIsConsumed?isconsumed=false",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"study",
+						"devops",
+						"findByIsConsumed"
+					],
+					"query": [
+						{
+							"key": "isconsumed",
+							"value": "false"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
