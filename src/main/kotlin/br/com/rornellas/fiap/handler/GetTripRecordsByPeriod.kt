@@ -19,8 +19,7 @@ class GetTripRecordsByPeriod :
         context.logger
             .log("Searching for registered trips between $starts and $ends")
         val studies: List<Trip?>? = repository.findByPeriod(starts, ends)
-        return if (studies == null || studies.isEmpty()) {
-            HandlerResponse.builder().setStatusCode(404).build()
-        } else HandlerResponse.builder().setStatusCode(200).setObjectBody(studies).build()
+
+        return HandlerResponse.builder().setStatusCode(200).setObjectBody(studies).build()
     }
 }

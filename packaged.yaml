@@ -1,6 +1,10 @@
-AWSTemplateFormatVersion: '2020-06-20'
+AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: 'trip-app Rest API to manage a trips'
+Description: 'trip-app
+
+  Rest API to manage a trips
+
+  '
 Globals:
   Function:
     Timeout: 60
@@ -14,7 +18,7 @@ Resources:
   CreateTripRecordFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://rornellasservless/dd1e3068199203cf34d7dc7ce9cacac2
+      CodeUri: s3://servlessfiap20200704/3fed96434b854aa90ea87e3d6d4d9c74
       Handler: br.com.rornellas.fiap.handler.CreateTripRecord::handleRequest
       Runtime: java8
       Policies:
@@ -30,7 +34,7 @@ Resources:
   GetTripRecordsByPeriodFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://rornellasservless/dd1e3068199203cf34d7dc7ce9cacac2
+      CodeUri: s3://servlessfiap20200704/3fed96434b854aa90ea87e3d6d4d9c74
       Handler: br.com.rornellas.fiap.handler.GetTripRecordsByPeriod::handleRequest
       Runtime: java8
       Policies:
@@ -49,7 +53,7 @@ Resources:
   GetTripRecordsByCountryFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://rornellasservless/dd1e3068199203cf34d7dc7ce9cacac2
+      CodeUri: s3://servlessfiap20200704/3fed96434b854aa90ea87e3d6d4d9c74
       Handler: br.com.rornellas.fiap.handler.GetTripRecordsByCountry::handleRequest
       Runtime: java8
       Policies:
@@ -78,14 +82,14 @@ Resources:
       KeySchema:
       - AttributeName: country
         KeyType: HASH
-      - AttributeName: city
+      - AttributeName: date
         KeyType: RANGE
       LocalSecondaryIndexes:
-      - IndexName: dateIndex
+      - IndexName: cityIndex
         KeySchema:
         - AttributeName: country
           KeyType: HASH
-        - AttributeName: date
+        - AttributeName: city
           KeyType: RANGE
         Projection:
           ProjectionType: ALL

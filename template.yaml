@@ -86,14 +86,14 @@ Resources:
       KeySchema:
         - AttributeName: country
           KeyType: HASH
-        - AttributeName: city
+        - AttributeName: date
           KeyType: RANGE
       LocalSecondaryIndexes:
-        - IndexName: dateIndex
+        - IndexName: cityIndex
           KeySchema:
             - AttributeName: country
               KeyType: HASH
-            - AttributeName: date
+            - AttributeName: city
               KeyType: RANGE
           Projection:
             ProjectionType: ALL

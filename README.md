@@ -1,9 +1,8 @@
-## AWS SAM Application for Managing Trip Data Lake
+## AWS SAM Application for Managing Trip
 
 This is a sample application to demonstrate how to build an application on AWS Serverless Envinronment using the
 AWS SAM, Amazon API Gateway, AWS Lambda and Amazon DynamoDB.
 It also uses the DynamoDBMapper ORM structure to map Trip items in a DynamoDB table to a RESTful API for managing Studies.
-
 
 ## Requirements
 
@@ -27,8 +26,8 @@ mvn install
 ### Local development
 
 **Invoking function locally through local API Gateway**
-1. Start DynamoDB Local in a Docker container. `docker run -p 8000:8000 -v $(pwd)/local/dynamodb:/data/ amazon/dynamodb-local -jar DynamoDBLocal.jar -sharedDb -dbPath /data`
-2. Create the DynamoDB table. `aws dynamodb create-table --table-name trip --attribute-definitions AttributeName=country,AttributeType=S AttributeName=city,AttributeType=S AttributeName=date,AttributeType=S --key-schema AttributeName=country,KeyType=HASH AttributeName=city,KeyType=RANGE --local-secondary-indexes 'IndexName=dateIndex,KeySchema=[{AttributeName=country,KeyType=HASH},{AttributeName=date,KeyType=RANGE}],Projection={ProjectionType=ALL}' --billing-mode PAY_PER_REQUEST --endpoint-url http://localhost:8000`
+1. Start DynamoDB Local in a Docker container using docker-compose at the root of the project. You can also run `docker run -p 8000:8000 -v $(pwd)/local/dynamodb:/data/ amazon/dynamodb-local -jar DynamoDBLocal.jar -sharedDb -dbPath /data`
+2. Create the DynamoDB table. `aws dynamodb create-table --table-name trip --attribute-definitions AttributeName=country,AttributeType=S AttributeName=date,AttributeType=S AttributeName=city,AttributeType=S --key-schema AttributeName=country,KeyType=HASH AttributeName=date,KeyType=RANGE --local-secondary-indexes 'IndexName=cityIndex,KeySchema=[{AttributeName=country,KeyType=HASH},{AttributeName=city,KeyType=RANGE}],Projection={ProjectionType=ALL}' --billing-mode PAY_PER_REQUEST --endpoint-url http://localhost:8000`
 
 If the table already exist, you can delete: `aws dynamodb delete-table --table-name trip --endpoint-url http://localhost:8000`
 
@@ -43,12 +42,19 @@ If the table already exist, you can delete: `aws dynamodb delete-table --table-n
 
 If the previous command ran successfully you should now be able to hit the following local endpoint to
 invoke the functions rooted at `http://localhost:3000/trips/?starts=2020-01-02&ends=2020-02-02`.
-It shoud return 404. Now you can explore all endpoints, use the src/test/resources/Trip DataLake.postman_collection.json to import a API Rest Collection into Postman.
+
+It shoud return empty list. You can try to start posting trips to `http://localhost:3000/trips` using the example json below:
+
+{
+	"country": "Brazil",
+	"city": "Salvador",
+	"date": "2020-07-03",
+	"reason": "Cidade do axé!"
+}
 
 **SAM CLI** is used to emulate both Lambda and API Gateway locally and uses our `template.yaml` to
 understand how to bootstrap this environment (runtime, where the source code is, etc.) - The
 following excerpt is what the CLI will read in order to initialize an API and its routes:
-
 
 ## Packaging and deployment
 
@@ -59,30 +65,48 @@ dependencies:
 Firstly, we need a `S3 bucket` where we can upload our Lambda functions packaged as ZIP before we
 deploy anything - If you don't have a S3 bucket to store code artifacts then this is a good time to
 create one:
+* After created, you must to change s3 host address at file "packaged.yaml" in order to deploy to your own s3 bucket
 
-```powershell
-export BUCKET_NAME=my_cool_new_bucket
+- Windows (cmd)
+```
+set BUCKET_NAME="my_cool_new_bucket"
 aws s3 mb s3://%BUCKET_NAME%
+
+``` 
+
+- Linux
+```
+export BUCKET_NAME=my_cool_new_bucket
+aws s3 mb s3://$BUCKET_NAME
 ```
 
-Next, run the following command to package our Lambda function to S3:
+Next, from the project root directory, run the following command to package our Lambda function to S3:
 
-```powershell
+- Windows (cmd)
+```
 sam package --template-file template.yaml --output-template-file packaged.yaml --s3-bucket %BUCKET_NAME%
+```
+
+- Linux
+```
+sam package \
+    --template-file template.yaml \
+    --output-template-file packaged.yaml \
+    --s3-bucket $BUCKET_NAME
 ```
 
 Next, the following command will create a Cloudformation Stack and deploy your SAM resources.
 
-```bash
-sam deploy --template-file packaged.yaml --stack-name trip-datalake --capabilities CAPABILITY_IAM
+```
+sam deploy --template-file packaged.yaml --stack-name trip-app --capabilities CAPABILITY_IAM
 ```
 
 > **See [Serverless Application Model (SAM) HOWTO Guide](https://github.com/awslabs/serverless-application-model/blob/master/HOWTO.md) for more details in how to get started.**
 
 After deployment is complete you can run the following command to retrieve the API Gateway Endpoint URL:
 
-```bash
-aws cloudformation describe-stacks --stack-name trip-datalake --query 'Stacks[].Outputs'
+```
+aws cloudformation describe-stacks --stack-name trip-app --query 'Stacks[].Outputs'
 ```
 
 # Appendix
@@ -107,9 +131,4 @@ aws cloudformation describe-stacks \
     --stack-name sam-orderHandler --query 'Stacks[].Outputs'
 ```
 
-## Bringing to the next level
-
-Next, you can use the following resources to know more about beyond hello world samples and how others
-structure their Serverless applications:
-
-* [AWS Serverless Application Repository](https://aws.amazon.com/serverless/serverlessrepo/)
+Now you can start using your trip app at the cloud!

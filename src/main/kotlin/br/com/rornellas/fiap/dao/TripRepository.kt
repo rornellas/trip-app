@@ -30,7 +30,6 @@ class TripRepository {
         expression["#date"] = "date"
 
         val queryExpression: DynamoDBScanExpression = DynamoDBScanExpression()
-            .withIndexName("dateIndex").withConsistentRead(false)
             .withFilterExpression("#date between :val2 and :val3")
             .withExpressionAttributeValues(eav).withExpressionAttributeNames(expression)
 
@@ -43,7 +42,9 @@ class TripRepository {
         eav[":val1"] = AttributeValue().withS(country)
         eav[":val2"] = AttributeValue().withS(city)
         val queryExpression: DynamoDBQueryExpression<Trip> = DynamoDBQueryExpression<Trip>()
-            .withKeyConditionExpression("country = :val1 and city = :val2").withExpressionAttributeValues(eav)
+            .withKeyConditionExpression("country = :val1")
+            .withFilterExpression("contains(city, :val2)")
+            .withExpressionAttributeValues(eav)
         return mapper!!.query(Trip::class.java, queryExpression)
     }
 

@@ -6,10 +6,10 @@ import com.amazonaws.services.dynamodbv2.datamodeling.*
 data class Trip(
     @DynamoDBHashKey(attributeName = "country")
     var country: String? = null,
-    @DynamoDBRangeKey(attributeName = "city")
-    var city: String? = null,
-    @DynamoDBIndexRangeKey(attributeName = "date", localSecondaryIndexName = "dateIndex")
+    @DynamoDBRangeKey(attributeName = "date")
     var date: String? = null,
+    @DynamoDBIndexRangeKey(attributeName = "city", localSecondaryIndexName = "cityIndex")
+    var city: String? = null,
     @DynamoDBAttribute(attributeName = "reason")
     var reason: String? = null
 )
