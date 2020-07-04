@@ -1,3 +1,6 @@
+## Stack
+* Kotlin, AWS Sam, Dynamodb, Lambda, Serverless
+
 ## AWS SAM Application for Managing Trip
 
 This is a sample application to demonstrate how to build an application on AWS Serverless Envinronment using the
