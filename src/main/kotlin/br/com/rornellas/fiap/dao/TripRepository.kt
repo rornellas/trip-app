@@ -2,14 +2,16 @@ package br.com.rornellas.fiap.dao
 
 import br.com.rornellas.fiap.model.Trip
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression
 import com.amazonaws.services.dynamodbv2.model.AttributeValue
+import com.amazonaws.services.dynamodbv2.model.ScanRequest
 
 class TripRepository {
     private val mapper = DynamoDBManager.mapper()
 
-    fun save(study: Trip): Trip? {
-        mapper!!.save<Any>(study)
-        return study
+    fun save(trip: Trip): Trip? {
+        mapper!!.save<Any>(trip)
+        return trip
     }
 
     fun findByPeriod(
@@ -20,11 +22,19 @@ class TripRepository {
             HashMap()
         eav[":val2"] = AttributeValue().withS(starts)
         eav[":val3"] = AttributeValue().withS(ends)
-        val queryExpression: DynamoDBQueryExpression<Trip> = DynamoDBQueryExpression<Trip>()
+
+        val expression: MutableMap<String, String> =
+            java.util.HashMap()
+
+        // date is a reserved word in DynamoDB
+        expression["#date"] = "date"
+
+        val queryExpression: DynamoDBScanExpression = DynamoDBScanExpression()
             .withIndexName("dateIndex").withConsistentRead(false)
-            .withKeyConditionExpression("date between :val2 and :val3")
-            .withExpressionAttributeValues(eav)
-        return mapper!!.query(Trip::class.java, queryExpression)
+            .withFilterExpression("#date between :val2 and :val3")
+            .withExpressionAttributeValues(eav).withExpressionAttributeNames(expression)
+
+        return mapper!!.scan(Trip::class.java, queryExpression)
     }
 
     fun findByCity(country: String?, city: String?): List<Trip?>? {

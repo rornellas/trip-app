@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "ef9ef35f-a302-4fa0-b0f0-b15a387362ba",
-		"name": "Study DataLake",
+		"name": "Trip DataLake",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -11,14 +11,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/study/devops/findByPeriod?starts=2015-02-01&ends=2015-08-09",
+					"raw": "http://localhost:3000/trip/devops/findByPeriod?starts=2015-02-01&ends=2015-08-09",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
-						"study",
+						"trip",
 						"devops",
 						"findByPeriod"
 					],
@@ -37,7 +37,7 @@
 			"response": []
 		},
 		{
-			"name": "createStudyRecord",
+			"name": "createTripRecord",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -53,14 +53,14 @@
 					"raw": "{\n    \"topic\": null,\n    \"dateTimeCreation\": null,\n    \"tag\": null,\n    \"url\": null,\n    \"description\": null,\n    \"consumed\": null\n}"
 				},
 				"url": {
-					"raw": "http://localhost:3000/study",
+					"raw": "http://localhost:3000/trip",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
-						"study"
+						"trip"
 					]
 				}
 			},
@@ -72,14 +72,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/study/devops/findByTag?tag=codePipeline",
+					"raw": "http://localhost:3000/trip/devops/findByTag?tag=codePipeline",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
-						"study",
+						"trip",
 						"devops",
 						"findByTag"
 					],
@@ -99,14 +99,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/study/devops/findByIsConsumed?isconsumed=false",
+					"raw": "http://localhost:3000/trip/devops/findByIsConsumed?isconsumed=false",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
-						"study",
+						"trip",
 						"devops",
 						"findByIsConsumed"
 					],

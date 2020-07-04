@@ -1,18 +1,14 @@
 {
-	"CreateStudyRecordFunction": {
+	"CreateTripRecordFunction": {
 		"ENDPOINT_OVERRIDE": "http://docker.for.mac.localhost:8000",
-		"TABLE_NAME": "study"
+		"TABLE_NAME": "trip"
 	},
-	"GetStudyRecordsByPeriodFunction": {
+	"GetTripRecordsByPeriodFunction": {
 		"ENDPOINT_OVERRIDE": "http://docker.for.mac.localhost:8000",
-		"TABLE_NAME": "study"
+		"TABLE_NAME": "trip"
 	},
-	"GetStudyRecordsByTagFunction": {
+	"GetTripRecordsByCountryFunction": {
 		"ENDPOINT_OVERRIDE": "http://docker.for.mac.localhost:8000",
-		"TABLE_NAME": "study"
-	},
-	"GetStudyRecordsByIsConsumedFunction": {
-		"ENDPOINT_OVERRIDE": "http://docker.for.mac.localhost:8000",
-		"TABLE_NAME": "study"
+		"TABLE_NAME": "trip"
 	}
 }

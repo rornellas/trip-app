@@ -1,18 +1,14 @@
 {
-	"CreateStudyRecordFunction": {
-		"ENDPOINT_OVERRIDE": "http://localhost:8000",
-		"TABLE_NAME": "study"
+	"CreateTripRecordFunction": {
+		"ENDPOINT_OVERRIDE": "http://192.168.253.1:8000",
+		"TABLE_NAME": "trip"
 	},
-	"GetStudyRecordsByPeriodFunction": {
-		"ENDPOINT_OVERRIDE": "http://localhost:8000",
-		"TABLE_NAME": "study"
+	"GetTripRecordsByPeriodFunction": {
+		"ENDPOINT_OVERRIDE": "http://192.168.253.1:8000",
+		"TABLE_NAME": "trip"
 	},
-	"GetStudyRecordsByTagFunction": {
-		"ENDPOINT_OVERRIDE": "http://localhost:8000",
-		"TABLE_NAME": "study"
-	},
-	"GetStudyRecordsByIsConsumedFunction": {
-		"ENDPOINT_OVERRIDE": "http://localhost:8000",
-		"TABLE_NAME": "study"
+	"GetTripRecordsByCountryFunction": {
+		"ENDPOINT_OVERRIDE": "http://192.168.253.1:8000",
+		"TABLE_NAME": "trip"
 	}
 }

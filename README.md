@@ -1,8 +1,8 @@
-## AWS SAM Application for Managing Study Data Lake
+## AWS SAM Application for Managing Trip Data Lake
 
 This is a sample application to demonstrate how to build an application on AWS Serverless Envinronment using the
 AWS SAM, Amazon API Gateway, AWS Lambda and Amazon DynamoDB.
-It also uses the DynamoDBMapper ORM structure to map Study items in a DynamoDB table to a RESTful API for managing Studies.
+It also uses the DynamoDBMapper ORM structure to map Trip items in a DynamoDB table to a RESTful API for managing Studies.
 
 
 ## Requirements
@@ -30,18 +30,20 @@ mvn install
 1. Start DynamoDB Local in a Docker container. `docker run -p 8000:8000 -v $(pwd)/local/dynamodb:/data/ amazon/dynamodb-local -jar DynamoDBLocal.jar -sharedDb -dbPath /data`
 2. Create the DynamoDB table. `aws dynamodb create-table --table-name trip --attribute-definitions AttributeName=country,AttributeType=S AttributeName=city,AttributeType=S AttributeName=date,AttributeType=S --key-schema AttributeName=country,KeyType=HASH AttributeName=city,KeyType=RANGE --local-secondary-indexes 'IndexName=dateIndex,KeySchema=[{AttributeName=country,KeyType=HASH},{AttributeName=date,KeyType=RANGE}],Projection={ProjectionType=ALL}' --billing-mode PAY_PER_REQUEST --endpoint-url http://localhost:8000`
 
-If the table already exist, you can delete: `aws dynamodb delete-table --table-name study --endpoint-url http://localhost:8000`
+If the table already exist, you can delete: `aws dynamodb delete-table --table-name trip --endpoint-url http://localhost:8000`
 
 3. Start the SAM local API.
  - On a Mac: `sam local start-api --env-vars src/test/resources/test_environment_mac.json`
  - On Windows: `sam local start-api --env-vars src/test/resources/test_environment_windows.json`
  - On Linux: `sam local start-api --env-vars src/test/resources/test_environment_linux.json`
 
+* If you have any issues using 'localhost', try using your network ip instead
+
 * You may need to change host and port according to your configurations
 
 If the previous command ran successfully you should now be able to hit the following local endpoint to
 invoke the functions rooted at `http://localhost:3000/trips/?starts=2020-01-02&ends=2020-02-02`.
-It shoud return 404. Now you can explore all endpoints, use the src/test/resources/Study DataLake.postman_collection.json to import a API Rest Collection into Postman.
+It shoud return 404. Now you can explore all endpoints, use the src/test/resources/Trip DataLake.postman_collection.json to import a API Rest Collection into Postman.
 
 **SAM CLI** is used to emulate both Lambda and API Gateway locally and uses our `template.yaml` to
 understand how to bootstrap this environment (runtime, where the source code is, etc.) - The
@@ -72,7 +74,7 @@ sam package --template-file template.yaml --output-template-file packaged.yaml -
 Next, the following command will create a Cloudformation Stack and deploy your SAM resources.
 
 ```bash
-sam deploy --template-file packaged.yaml --stack-name study-datalake --capabilities CAPABILITY_IAM
+sam deploy --template-file packaged.yaml --stack-name trip-datalake --capabilities CAPABILITY_IAM
 ```
 
 > **See [Serverless Application Model (SAM) HOWTO Guide](https://github.com/awslabs/serverless-application-model/blob/master/HOWTO.md) for more details in how to get started.**
@@ -80,7 +82,7 @@ sam deploy --template-file packaged.yaml --stack-name study-datalake --capabilit
 After deployment is complete you can run the following command to retrieve the API Gateway Endpoint URL:
 
 ```bash
-aws cloudformation describe-stacks --stack-name study-datalake --query 'Stacks[].Outputs'
+aws cloudformation describe-stacks --stack-name trip-datalake --query 'Stacks[].Outputs'
 ```
 
 # Appendix

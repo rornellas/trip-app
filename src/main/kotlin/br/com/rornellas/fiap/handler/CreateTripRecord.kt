@@ -22,8 +22,8 @@ class CreateTripRecord :
         } catch (e: IOException) {
             return HandlerResponse.builder().setStatusCode(400).setRawBody("Your Trip has invalid data/format!").build()
         }
-//        context.logger.log("Creating a new study record for the topic " + study.topic)
-        val studyRecorded: Trip? = repository.save(trip)
-        return HandlerResponse.builder().setStatusCode(201).setObjectBody(studyRecorded).build()
+//        context.logger.log("Creating a new trip record for the topic " + trip.topic)
+        val tripRecorded: Trip? = repository.save(trip)
+        return HandlerResponse.builder().setStatusCode(201).setObjectBody(tripRecorded).build()
     }
 }
